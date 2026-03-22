@@ -85,3 +85,30 @@ class Game:
 
                     if player.money < 0:
                         player.bankrupt = True
+
+        def calculate_rent(self, property):
+            """
+            This function helps calculate the rent owned when landing on a property.
+
+            Rent rules:
+            - base rent equals the property's price
+            - if owner owns ALL properties of that color, rent is doubled
+
+            Args:
+                property (Property): Property being landed on
+
+            Return:
+                int: rent amount
+            """
+
+            # First we want to find all properties on the board with the same colour
+            same_colour = [] # append all instances with same colour as inputted property here
+            for p in self.board:
+                if isinstance(p, Property) and p.colour == property.colour: #makes sure that we check Properties only
+                    same_colour.append(p)
+
+            # Check if owner owns all of these
+            if all(p.owner == property.owner for p in same_colour): # checks if every property ins ame_colour has the same owner as property_owner
+                return property.price * 2
+            
+            return property.price #return normal price if owner doesn't own all
