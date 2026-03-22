@@ -1,4 +1,14 @@
 class Player:
+    """
+    Represents a player in the Monopoly Game.
+
+    Attributes:
+        name(str): The player's name.
+        money (int): Current amount of money the player has, initialised at 16.
+        position (int): Current board index the player occupies, 0 is the go square.
+        properties (list): List of properties owned by the player.
+        bankrupt (bool): Indicates whether the player is bankrupt.
+    """
     def __init__(self, name):
         self.name = name
         self.money = 16
@@ -7,6 +17,15 @@ class Player:
         self.bankrupt = False
 
 class Property:
+    """
+    Represents a purchasable property on the board.
+
+    Attributes:
+        name (str): Property name.
+        price (int): Purchase price and base rent value.
+        colour (str): Colour group used to determine monopolies.
+        owner (Player or None): Player who owns the property, set as None as no one owns it at the start.
+    """
     def __init__(self, name, price, colour):
         self.name = name
         self.price = price
@@ -18,7 +37,25 @@ class Property:
     
 
 class Game:
+    """
+    Represents the full Monopoly game simulation.
+
+    This class manages:
+    - Player turns
+    - Movement around the board
+    - Property purchases
+    - Rent payments
+    - Monopoly rent doubling
+    - Bankruptcy detection
+    - Determining the winner
+    """
     def __init__(self, board):
+        """
+        Initializes the game with the provided board.
+
+        Args:
+            board (list): List of board spaces loaded from board.json.
+        """
         self.board = board
         self.players = [
             Player("Peter"),
@@ -32,8 +69,8 @@ class Game:
         This function moves the player around the board based on the dice roll. The board wraps around when the end is reached and if player passes go,
         they receive $1
         Args:
-        player (Player): player taking the turn
-        roll(int): Dice roll value
+            player (Player): player taking the turn
+            roll(int): Dice roll value
         """
         board_size = len(self.board)
 
@@ -57,7 +94,8 @@ class Game:
         - If space is owned by another player -> pay rent
         - If player cannot afford rent -> bankruptcy occurs
 
-        args: player (Player): Player who landed on the space
+        Args: 
+            player (Player): Player who landed on the space
         """
 
         space = self.board[player.position]
@@ -82,7 +120,6 @@ class Game:
                 space.owner.money += rent
 
                 #check bankruptcy condition
-
                 if player.money < 0:
                     player.bankrupt = True
 
