@@ -140,3 +140,23 @@ class Game:
                 break
 
             turn += 1
+
+    def results(self):
+        
+        """
+        This function gets the player with the most money to determine who the winner is whenever the game ends
+        return: name of winner and the variables for each player in the game
+        """
+        winner = max(self.players, key=lambda p: p.money)
+
+        return {
+            "WINNER: ": winner.name,
+            "players: ": [
+                {
+                    "name": p.name,
+                    "money": p.money,
+                    "position": p.position,
+                }
+                for p in self.players
+            ]
+        }

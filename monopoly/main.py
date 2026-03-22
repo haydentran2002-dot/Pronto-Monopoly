@@ -106,3 +106,30 @@ print(f"Player2 money: {player2.money}")
 print(f"Player2 bankrupt: {player2.bankrupt}")
 
 
+print("\n=== TEST RESULTS FUNCTION ===")
+
+result = game.results()
+
+print("Winner:", result["WINNER: "])
+print("Players:")
+
+for p in result["players: "]:
+    print(f"Name: {p['name']}, Money: {p['money']}, Position: {p['position']}")
+
+
+print("\n=== TEST RESULTS WITH CONTROLLED VALUES ===")
+
+# manually set values
+game.players[0].money = 10
+game.players[1].money = 5
+game.players[2].money = 8
+game.players[3].money = 15
+
+result = game.results()
+
+print("Expected winner: Sweedal")
+print("Actual winner:", result["WINNER: "])
+
+for p in result["players: "]:
+    print(p)
+
