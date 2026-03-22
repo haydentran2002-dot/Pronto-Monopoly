@@ -47,3 +47,41 @@ class Game:
                 player.money +=1
 
             player.position = new_pos
+
+        def handle_space(self,player):
+            """
+            Handles the action that occurs whenver a player lands on a space.
+
+            POSSIBLE OUTCOMES:
+            - If space is unowned -> player must buy it
+            - If space is owned by another player -> pay rent
+            - If player cannot afford rent -> bankruptcy occurs
+
+            args: player (Player): Player who landed on the space
+            """
+
+            space = self.board[player.position]
+
+            if isinstance(space, Property):
+
+                # if unowned player must buy it. OR if they do not have enough to buy do nothing
+                if space.owner is None:
+                    if player.money >= space.price:
+                        player.money -= space.price
+                        space.owner = player
+                        player.properties.append(space)
+
+                # if owned by another player, rent must be paid
+
+                elif space.owner != player:
+
+                    rent = self.calculate_rent(space) #will create this function later, but just have it  here for now
+
+                    #transfer rent
+                    player.money -= rent
+                    space.owner.money += rent
+
+                    #check bankruptcy condition
+
+                    if player.money < 0:
+                        player.bankrupt = True
