@@ -10,10 +10,11 @@ Hi, this is my repository for the monopoly coding test :)
 - Rent doubles if full colour set is owned
 - Game ends when ANY player is bankrupt
 
-## Assumptions
-- Players can go into negative money before bankruptcy is triggered
-- No skipping purchases or auctioning (this one is implied as there is not other option either buy or don't)
+## Assumptions and interpretations
+- Game ends immediately when player becomes bankrupt
+- No skipping purchases or auctioning (this one is implied as there is no other option either buy or cant)
 - No other Monopoly rules
+- Rent is equal to property price unless monopoly achieved
 
 ## My plan and thoughts for solving this problem
 1. Load board from the json

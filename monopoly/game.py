@@ -15,4 +15,14 @@ class Property:
 
     def __repr__(self): # used to help see the output my clearly adn check that the json file import worked
         return f"Property(name={self.name}, price={self.price}, colour={self.colour}, owner={self.owner.name if self.owner else None})"
+    
 
+class Game:
+    def __init__(self, board):
+        self.board = board
+        self.players = {
+            Player("Peter"),
+            Player("Billy"),
+            Player("Charlotte"),
+            Player("Sweedal")
+        }
