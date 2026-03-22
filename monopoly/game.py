@@ -26,3 +26,24 @@ class Game:
             Player("Charlotte"),
             Player("Sweedal")
         }
+
+        def move_player(self, player, roll):
+            """
+            This function moves the player around the board based on the dice roll. The board wraps around when the end is reached and if player passes go,
+            they receive $1
+            Args:
+            player (Player): player taking the turn
+            roll(int): Dice roll value
+            """
+            board_size = len(self.board)
+
+            old_pos = player.position
+
+            #wraps around movement using modulo
+            new_pos = (old_pos + roll) % board_size
+
+            # if player crosses the board boundary, the player passes GO suare
+            if old_pos + roll >= board_size:
+                player.money +=1
+
+            player.position = new_pos

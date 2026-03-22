@@ -15,6 +15,7 @@ Hi, this is my repository for the monopoly coding test :)
 - No skipping purchases or auctioning (this one is implied as there is no other option either buy or cant)
 - No other Monopoly rules
 - Rent is equal to property price unless monopoly achieved
+- When landing or crossing GO, the player receives 1 dollar
 
 ## My plan and thoughts for solving this problem
 1. Load board from the json
