@@ -38,98 +38,130 @@ def load_rolls(path):
     with open(path) as f:
         return json.load(f)
     
-board = load_board("board.json")
-rolls1 = load_rolls("rolls_1.json")
-rolls2 = load_rolls("rolls_2.json")
+def simulate_game(board_file, rolls_file):
+    """
+    Simulates one  full game of Woven Monopoly
+    1. Load the board configuration
+    2. Load the predetermined dice rolls
+    3. Initialise Game object
+    4. Run the game simulation
+    5. Return the final results
 
-# print(board)
-# print(rolls1)
-# print(rolls2)
+    Args:
+        board_file (str): path to board json
+        rolls_file (str): path to dice rolls json
+    Returns:
+        dict: Game results including winner and player states
+    """
+    board = load_board(board_file)
+    rolls = load_rolls(rolls_file)
 
+    # intialise the game
+    game = Game(board)
 
-board = [
-    {"type": "go"},
-    Property("Red1", 2, "red"),
-    Property("Red2", 2, "red"),
-    Property("Blue1", 3, "blue"),
-]
+    # run the simulation
+    game.play(rolls)
 
-game = Game(board)
-player = game.players[0]
-
-print("=== TEST MOVE PLAYER ===")
-print(f"Start position: {player.position}, money: {player.money}")
-
-game.move_player(player, 2)
-
-print(f"After move: position={player.position}, money={player.money}")
-
-print("\n=== TEST BUY PROPERTY ===")
-
-player.position = 1  # land on Red1
-game.handle_space(player)
-
-print(f"Money after buying: {player.money}")
-print(f"Owner of Red1: {board[1].owner.name}")
-print(f"Player properties: {[p.name for p in player.properties]}")
+    return game.results()
 
 
-print("\n=== TEST RENT (NORMAL) ===")
+#now run simulation for both roll sets
+results1 = simulate_game("board.json", "rolls_1.json")
+results2 = simulate_game("board.json", "rolls_2.json")
 
-player2 = game.players[1]
+# Print results to the console
+print("Game 1 results")
+print(results1)
 
-# player1 owns Red1 already
-player2.position = 1
-game.handle_space(player2)
-
-print(f"Player2 money after rent: {player2.money}")
-print(f"Player1 money after receiving rent: {player.money}")
-
-print("\n=== TEST DOUBLE RENT ===")
-
-# give player ownership of ALL red properties
-board[2].owner = player
-player.properties.append(board[2])
-
-rent = game.calculate_rent(board[1])
-
-print(f"Calculated rent (should be doubled): {rent}")
-
-print("\n=== TEST BANKRUPTCY ===")
-
-player2.money = 1  # force low money
-player2.position = 1
-
-game.handle_space(player2)
-
-print(f"Player2 money: {player2.money}")
-print(f"Player2 bankrupt: {player2.bankrupt}")
+print("Game 2 results")
+print(results2)
 
 
-print("\n=== TEST RESULTS FUNCTION ===")
 
-result = game.results()
+# these small test cases are left here for future reference if I ever want to come back and check
+# board = [
+#     {"type": "go"},
+#     Property("Red1", 2, "red"),
+#     Property("Red2", 2, "red"),
+#     Property("Blue1", 3, "blue"),
+# ]
 
-print("Winner:", result["WINNER: "])
-print("Players:")
+# game = Game(board)
+# player = game.players[0]
 
-for p in result["players: "]:
-    print(f"Name: {p['name']}, Money: {p['money']}, Position: {p['position']}")
+# print("=== TEST MOVE PLAYER ===")
+# print(f"Start position: {player.position}, money: {player.money}")
+
+# game.move_player(player, 2)
+
+# print(f"After move: position={player.position}, money={player.money}")
+
+# print("\n=== TEST BUY PROPERTY ===")
+
+# player.position = 1  # land on Red1
+# game.handle_space(player)
+
+# print(f"Money after buying: {player.money}")
+# print(f"Owner of Red1: {board[1].owner.name}")
+# print(f"Player properties: {[p.name for p in player.properties]}")
 
 
-print("\n=== TEST RESULTS WITH CONTROLLED VALUES ===")
+# print("\n=== TEST RENT (NORMAL) ===")
 
-# manually set values
-game.players[0].money = 10
-game.players[1].money = 5
-game.players[2].money = 8
-game.players[3].money = 15
+# player2 = game.players[1]
 
-result = game.results()
+# # player1 owns Red1 already
+# player2.position = 1
+# game.handle_space(player2)
 
-print("Expected winner: Sweedal")
-print("Actual winner:", result["WINNER: "])
+# print(f"Player2 money after rent: {player2.money}")
+# print(f"Player1 money after receiving rent: {player.money}")
 
-for p in result["players: "]:
-    print(p)
+# print("\n=== TEST DOUBLE RENT ===")
+
+# # give player ownership of ALL red properties
+# board[2].owner = player
+# player.properties.append(board[2])
+
+# rent = game.calculate_rent(board[1])
+
+# print(f"Calculated rent (should be doubled): {rent}")
+
+# print("\n=== TEST BANKRUPTCY ===")
+
+# player2.money = 1  # force low money
+# player2.position = 1
+
+# game.handle_space(player2)
+
+# print(f"Player2 money: {player2.money}")
+# print(f"Player2 bankrupt: {player2.bankrupt}")
+
+
+# print("\n=== TEST RESULTS FUNCTION ===")
+
+# result = game.results()
+
+# print("Winner:", result["WINNER: "])
+# print("Players:")
+
+# for p in result["players: "]:
+#     print(f"Name: {p['name']}, Money: {p['money']}, Position: {p['position']}")
+
+
+# print("\n=== TEST RESULTS WITH CONTROLLED VALUES ===")
+
+# # manually set values
+# game.players[0].money = 10
+# game.players[1].money = 5
+# game.players[2].money = 8
+# game.players[3].money = 15
+
+# result = game.results()
+
+# print("Expected winner: Sweedal")
+# print("Actual winner:", result["WINNER: "])
+
+# for p in result["players: "]:
+#     print(p)
 
