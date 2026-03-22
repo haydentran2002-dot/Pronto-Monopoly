@@ -145,12 +145,17 @@ class Game:
         
         """
         This function gets the player with the most money to determine who the winner is whenever the game ends
-        return: name of winner and the variables for each player in the game
+        return: 
+            dict:
+                - winners(list[str]): one or more winners to handle ties
+                - players(list[dict]): player states
         """
-        winner = max(self.players, key=lambda p: p.money)
+        max_money = max(p.money for p in self.players)
+        
+        winners = [p for p in self.players if p.money == max_money]
 
         return {
-            "WINNER: ": winner.name,
+            "Winner/s: ": [p.name for p in winners],
             "players: ": [
                 {
                     "name": p.name,
