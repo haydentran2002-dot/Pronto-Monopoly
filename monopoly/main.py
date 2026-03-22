@@ -1,4 +1,4 @@
-from game import Property
+from game import Property, Game
 import json
 
 
@@ -42,6 +42,6 @@ board = load_board("board.json")
 rolls1 = load_rolls("rolls_1.json")
 rolls2 = load_rolls("rolls_2.json")
 
-print(board)
-print(rolls1)
-print(rolls2)
+# print(board)
+# print(rolls1)
+# print(rolls2)
