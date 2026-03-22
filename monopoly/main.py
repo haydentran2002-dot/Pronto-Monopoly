@@ -1,7 +1,6 @@
 from game import Property, Game
 import json
 
-
 def load_board(path):
     """
     This function loads the Monopoloy board from the provided JSON file
