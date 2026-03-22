@@ -112,3 +112,31 @@ class Game:
                 return property.price * 2
             
             return property.price #return normal price if owner doesn't own all
+        
+
+        def play(self, rolls):
+            """
+            Simulates the full game using sequence of dice rolls
+            Player take turns in order and will immediately end when a player becomes bankrupt
+            Or just ends when all the rolls are up and no one bankrupt
+
+            Args:
+                rolls (list[int]): Predetermined dice roll sequence
+            """
+
+            turn = 0
+
+            while turn < len(rolls):
+
+                # determine which players turn it is
+                player = self.players[turn % len(self.players)]
+                roll = rolls[turn]
+
+                self.move_player(player, roll)
+                self.handle_space(player)
+
+                # stop immediately when someone goes bankrupt
+                if player.bankrupt:
+                    break
+
+                turn += 1
