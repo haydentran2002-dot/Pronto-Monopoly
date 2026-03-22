@@ -45,3 +45,64 @@ rolls2 = load_rolls("rolls_2.json")
 # print(board)
 # print(rolls1)
 # print(rolls2)
+
+
+board = [
+    {"type": "go"},
+    Property("Red1", 2, "red"),
+    Property("Red2", 2, "red"),
+    Property("Blue1", 3, "blue"),
+]
+
+game = Game(board)
+player = game.players[0]
+
+print("=== TEST MOVE PLAYER ===")
+print(f"Start position: {player.position}, money: {player.money}")
+
+game.move_player(player, 2)
+
+print(f"After move: position={player.position}, money={player.money}")
+
+print("\n=== TEST BUY PROPERTY ===")
+
+player.position = 1  # land on Red1
+game.handle_space(player)
+
+print(f"Money after buying: {player.money}")
+print(f"Owner of Red1: {board[1].owner.name}")
+print(f"Player properties: {[p.name for p in player.properties]}")
+
+
+print("\n=== TEST RENT (NORMAL) ===")
+
+player2 = game.players[1]
+
+# player1 owns Red1 already
+player2.position = 1
+game.handle_space(player2)
+
+print(f"Player2 money after rent: {player2.money}")
+print(f"Player1 money after receiving rent: {player.money}")
+
+print("\n=== TEST DOUBLE RENT ===")
+
+# give player ownership of ALL red properties
+board[2].owner = player
+player.properties.append(board[2])
+
+rent = game.calculate_rent(board[1])
+
+print(f"Calculated rent (should be doubled): {rent}")
+
+print("\n=== TEST BANKRUPTCY ===")
+
+player2.money = 1  # force low money
+player2.position = 1
+
+game.handle_space(player2)
+
+print(f"Player2 money: {player2.money}")
+print(f"Player2 bankrupt: {player2.bankrupt}")
+
+
